@@ -117,22 +117,12 @@ Instance.new = function(className, parent)
     end
 end
 
-local file = readfile("client/client.txt")
-if file then
-    local ua = file:match("([^\r\n]+)")
-    if ua then
-        local userAgent = ua .. "/MoonAPI"
-        local oldRequest = request
-        getgenv().request = function(options)
-            options.Headers = options.Headers or {}
-            options.Headers["User-Agent"] = userAgent
-            return oldRequest(options)
-        end
-    else
-        error("Unable to load config")
-    end
-else
-    error("Unable to load config")
+local userAgent = "MoonAPI"
+local oldRequest = request
+getgenv().request = function(options)
+    options.Headers = options.Headers or {}
+    options.Headers["User-Agent"] = userAgent
+    return oldRequest(options)
 end
 
 function printidentity()
